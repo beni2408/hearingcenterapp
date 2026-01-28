@@ -1,0 +1,7 @@
+ menu page = http://localhost:5173/Menu 
+
+create new menu - http://localhost:5173/Menu/new
+
+pages = http://localhost:5173/Pages
+
+foooter = http://localhost:5173/footer

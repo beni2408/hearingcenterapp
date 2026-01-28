@@ -1,0 +1,1 @@
+export { default as component } from "../../../../src/routes/Dynamic_Blog/[id]/edit/+page.svelte";

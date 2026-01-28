@@ -1,0 +1,31 @@
+{
+	"name": "thehearingcenterapp",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^7.0.0",
+		"@sveltejs/kit": "^2.49.1",
+		"@sveltejs/vite-plugin-svelte": "^6.2.1",
+		"@tailwindcss/typography": "^0.5.19",
+		"autoprefixer": "^10.4.23",
+		"postcss": "^8.5.6",
+		"svelte": "^5.45.6",
+		"tailwindcss": "^4.1.18",
+		"vite": "^7.2.6"
+	},
+	"dependencies": {
+		"@ckeditor/ckeditor5-build-classic": "^41.4.2",
+		"@fortawesome/fontawesome-free": "^7.1.0",
+		"@friendofsvelte/tipex": "^0.1.0",
+		"@portabletext/editor": "^4.2.4",
+		"@tailwindcss/vite": "^4.1.18",
+		"edra": "^2.0.24"
+	}
+}

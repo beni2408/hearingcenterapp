@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.page1bg {
+  height: 500px;
+  width: 100%;
+  display: flex;
+}
+
+.page1container1 {
+  height: 600px;
+  width: 700px;
+  margin-left: 70px;
+}
