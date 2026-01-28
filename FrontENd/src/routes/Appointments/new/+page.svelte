@@ -92,9 +92,9 @@
     required
   >
     <option value="">Select Team</option>
-    <option value="Doctor A">Team A</option>
-    <option value="Doctor B">Team B</option>
-    <option value="Doctor C">Team C</option>
+    <option value="Team A">Team A</option>
+    <option value="Team B">Team B</option>
+    <option value="Team C">Team C</option>
   </select>
   
 

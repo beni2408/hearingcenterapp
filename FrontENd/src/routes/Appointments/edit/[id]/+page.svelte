@@ -14,7 +14,7 @@
     let end_time = "";
     let person_name = "";
     let email = "";
-    let phone = "";
+    let mobile_number = "";
     let description = "";
   
     function getAppointmentId() {
@@ -40,7 +40,7 @@
         team_name = appt.team_name || "";
 
         email = appt.email || "";
-        phone = appt.phone || "";
+        mobile_number = appt.mobile_number || "";
         description = appt.description || "";
   
         loading = false;
@@ -65,7 +65,7 @@
       end_time,
       person_name,
       email,
-      phone,
+      mobile_number,
       description
     };
 
@@ -133,9 +133,9 @@
   required
 >
   <option value="">Select Team</option>
-  <option value="Doctor A">Team A</option>
-  <option value="Doctor B">Team B</option>
-  <option value="Doctor C">Team C</option>
+  <option value="Team A">Team A</option>
+  <option value="Team B">Team B</option>
+  <option value="Team C">Team C</option>
 </select>
 
 <input
@@ -144,10 +144,11 @@
   bind:value={email}
 />
 <input
-class="w-full border p-2"
-placeholder="Mobile Number "
-bind:value={phone}
+  class="w-full border p-2"
+  placeholder="Mobile Number"
+  bind:value={mobile_number}
 />
+
 
   
 <textarea

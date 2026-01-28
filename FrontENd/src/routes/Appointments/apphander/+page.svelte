@@ -68,7 +68,7 @@
       {#each appointments as appt}
         <tr>
           <td class="border p-2">{appt.title}</td>
-          <td class="border p-2 font-medium text-blue-700">
+          <td class="border p-2 font-medium text-blue-600">
             {appt.team_name}
           </td>
           <td class="border p-2">{appt.date}</td>
