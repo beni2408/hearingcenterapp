@@ -26,28 +26,21 @@
   window.location.href = "/Appointments/new";
 }
   </script>
-<h1 class="text-2xl font-bold mx-[80px] mb-6">
-    Appointment manangement
-  </h1>
+ 
   
   
-  
-  <div class="flex justify-between items-center mb-6 mx-[80px] mt-10">
+  <div class="flex justify-between items-center mx-[80px] mb-6 mt-10">
 
-    <h1 class="text-2xl font-bold mb-6">New Appointment</h1>
-    <div class="flex justify-end hover:cursor-pointer mb-6">
-      <div class="bg-black text-white text-xl w-[80px] h-[40px] rounded-4xl items-center flex justify-center">
-          <i class="fas fa-angle-left text-[15px]" ></i>
-
-          <button
-          on:click={goToNewAppointment}
-          class="bg-blue-900 text-white px-4 py-2 rounded text"
-        >
-          + Add New Appointment
-        </button>
-      </div>
-   
-  </div>
+    <h1 class="text-2xl font-bold mb-10">
+      Appointments manangement 
+    </h1>
+  
+    <button
+      on:click={goToNewAppointment}
+      class="bg-blue-900 text-white px-4 py-2 rounded"
+    >
+      + Add New Appointment
+    </button>
   </div>
   {#if loading}
     <p class="mx-[80px] mt-6">Loading...</p>
