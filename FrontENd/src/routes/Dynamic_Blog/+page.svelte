@@ -1,7 +1,11 @@
 <script>
     import Blogcard from "$lib/components/Blogcard.svelte";
-import { API_URL } from "$lib/config";
-  
+import { BLOG_API_URL } from "$lib/config";
+import { onMount } from "svelte";
+
+onMount(() => {
+  loadBlogs();
+});
     let blogs = [];
     let filteredBlogs = [];
 
@@ -11,28 +15,28 @@ import { API_URL } from "$lib/config";
     //   const json = await res.json();
     //   blogs = json.data.blogs;
     // }
-  async function loadBlogs() {
-  const res = await fetch(`${API_URL}/allblogs`);
-  const json = await res.json();
+    async function loadBlogs() {
+  try {
+    const res = await fetch(`${BLOG_API_URL}/allblogs`);
+    const json = await res.json();
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // normalize to start of day
+    blogs = json.data.blogs;
 
-  blogs = json.data.blogs;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  filteredBlogs = blogs.filter(blog => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    filteredBlogs = blogs.filter(blog => {
+      const publishDate = new Date(blog.publish_date);
+      publishDate.setHours(0, 0, 0, 0);
 
-  const publishDate = new Date(blog.publish_date);
-  publishDate.setHours(0, 0, 0, 0);
+      return blog.is_active === true && publishDate <= today;
+    });
 
-  return blog.is_active === true && publishDate <= today;
-});
-
-
+  } catch (err) {
+    console.error("Error fetching blogs:", err);
+  }
 }
-    loadBlogs();
+    // loadBlogs();
 
     // const htmlContent = (blog)=>{
       

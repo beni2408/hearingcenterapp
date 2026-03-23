@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-  import { API_URL } from "$lib/config";
+  import {BLOG_API_URL}  from "$lib/config";
 
   let blog_title = "";
   let blog_content = "";
@@ -56,7 +56,7 @@ let is_active = true;
     formData.append("is_active", is_active);
 
 
-    const res = await fetch(`${API_URL}/newblog`, {
+    const res = await fetch(`${BLOG_API_URL}/newblog`, {
       method: "POST",
       body: formData,
     });

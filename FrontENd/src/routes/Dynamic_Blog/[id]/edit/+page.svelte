@@ -1,5 +1,5 @@
 <script>
-  import { API_URL } from "$lib/config";
+  import { BLOG_API_URL } from "$lib/config";
   import { page } from "$app/stores";
   import { onMount, tick } from "svelte";
   import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -19,7 +19,7 @@
     id = $page.params.id;
 
     // 1️⃣ fetch blog
-    const res = await fetch(`${API_URL}/${id}`);
+    const res = await fetch(`${BLOG_API_URL}/${id}`);
     const json = await res.json();
 
     blog = json.data.blog;
@@ -72,7 +72,7 @@
       formData.append("blog_image", blog_image);
     }
 
-    const res = await fetch(`${API_URL}/updateblog/${id}`, {
+    const res = await fetch(`${BLOG_API_URL}/updateblog/${id}`, {
       method: "PUT",
       body: formData
     });

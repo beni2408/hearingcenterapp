@@ -1,5 +1,5 @@
 <script>
-  import { API_URL } from "$lib/config";
+  import {BLOG_API_URL}  from "$lib/config";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
 
@@ -9,7 +9,7 @@
   onMount(async () => {
     const id = $page.params.id;
 
-    const res = await fetch(`${API_URL}/${id}`);
+    const res = await fetch(`${BLOG_API_URL}/${id}`);
     const json = await res.json();
 
     const fetchedBlog = json.data.blog;
