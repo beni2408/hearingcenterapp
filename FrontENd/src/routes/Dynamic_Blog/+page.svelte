@@ -1,52 +1,42 @@
 <script>
-    import Blogcard from "$lib/components/Blogcard.svelte";
-import { BLOG_API_URL } from "$lib/config";
-import { onMount } from "svelte";
+  import Blogcard from "$lib/components/Blogcard.svelte";
+  import { BLOG_API_URL } from "$lib/config";
+  import { onMount } from "svelte";
+  import { currentLang } from "$lib/stores/lang";
 
-onMount(() => {
-  loadBlogs();
-});
-    let blogs = [];
-    let filteredBlogs = [];
+  let blogs = [];
+  let filteredBlogs = [];
+  let lang;
 
-  
-    // async function loadBlogs() {
-    //   const res = await fetch(`${API_URL}/allblogs`);
-    //   const json = await res.json();
-    //   blogs = json.data.blogs;
-    // }
-    async function loadBlogs() {
-  try {
-    const res = await fetch(`${BLOG_API_URL}/allblogs`);
-    const json = await res.json();
+  currentLang.subscribe((value) => {
+    lang = value;
+  });
 
-    blogs = json.data.blogs;
+  onMount(() => {
+    loadBlogs();
+  });
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  async function loadBlogs() {
+    try {
+      const res = await fetch(`${BLOG_API_URL}/allblogs`);
+      const json = await res.json();
 
-    filteredBlogs = blogs.filter(blog => {
-      const publishDate = new Date(blog.publish_date);
-      publishDate.setHours(0, 0, 0, 0);
+      blogs = json.data.blogs;
 
-      return blog.is_active === true && publishDate <= today;
-    });
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-  } catch (err) {
-    console.error("Error fetching blogs:", err);
+      filteredBlogs = blogs.filter((blog) => {
+        const publishDate = new Date(blog.publish_date);
+        publishDate.setHours(0, 0, 0, 0);
+
+        return blog.is_active === true && publishDate <= today;
+      });
+    } catch (err) {
+      console.error("Error fetching blogs:", err);
+    }
   }
-}
-    // loadBlogs();
-
-    // const htmlContent = (blog)=>{
-      
-    //   <p class="text-gray-700 leading-relaxed whitespace-pre-line">
-    //     {@html blog}
-    //   </p>
-    // }
-
-
-  </script>
+</script>
   
   <div class=" pt-8 px-[80px]">
     <div class="flex justify-between items-center mb-6">
@@ -69,13 +59,10 @@ onMount(() => {
     
         <!-- {#each blogs as blog} -->
         {#each filteredBlogs as blog}
-
-        <Blogcard
-          image={blog.blog_image}
-          title={blog.blog_title}
-          description={blog.blog_content.replace(/<[^>]*>?/gm, '').slice(0, 120) + '...'}
-          date={blog.blog_date}
-          link={`/Dynamic_Blog/${blog._id}`}
+        <Blogcard 
+          blog={blog} 
+          lang={lang} 
+          link={`/Dynamic_Blog/${blog._id}`} 
         />
       {/each}
       

@@ -2,12 +2,17 @@ import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema({
   blog_title: {
-    type: String,
-    required: true,
+    en: { type: String, required: true },
+    ta: { type: String },
+    ar: { type: String },
+    ml: { type: String },
   },
+
   blog_content: {
-    type: String,
-    required: true,
+    en: { type: String, required: true },
+    ta: { type: String },
+    ar: { type: String },
+    ml: { type: String },
   },
   blog_image: {
     type: String,
