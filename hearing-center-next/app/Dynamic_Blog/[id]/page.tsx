@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { BLOG_API_URL } from "@/lib/config";
-import { currentLang } from "@/lib/stores/lang";
 import { useParams } from "next/navigation";
+import { useLanguage } from "@/lib/context/LanguageContext";
+import { useAuth } from "@/lib/context/AuthContext";
+
+import Link from "next/link";
 
 type Blog = {
   blog_title: Record<string, string>;
@@ -19,18 +22,11 @@ export default function BlogDetailPage() {
   const params = useParams();
   const id = params?.id as string;
 
-  const [lang, setLang] = useState("en");
+  const { lang } = useLanguage();
+  const { user } = useAuth();
+
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
-
-  // 🌐 Language store
-  useEffect(() => {
-    const unsubscribe = currentLang.subscribe((value: string) => {
-      setLang(value);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   // 📦 Fetch blog
   useEffect(() => {
@@ -67,21 +63,12 @@ export default function BlogDetailPage() {
 
   return (
     <div className="pt-8 px-[80px]">
-      {/* LANGUAGE SWITCH */}
-      <div className="flex gap-3 mb-4">
-        <button onClick={() => currentLang.set("en")}>EN</button>
-        <button onClick={() => currentLang.set("ta")}>TA</button>
-        <button onClick={() => currentLang.set("ar")}>AR</button>
-        <button onClick={() => currentLang.set("ml")}>ML</button>
-      </div>
-
       {loading ? (
         <p className="text-gray-500">Loading blog...</p>
       ) : blog ? (
         <>
           {/* HEADER */}
           <div className="flex justify-between items-center mb-6">
-            {/* TITLE (RTL only for AR) */}
             <h1
               className={`text-3xl font-bold mb-4 ${
                 lang === "ar" ? "text-right" : ""
@@ -92,14 +79,13 @@ export default function BlogDetailPage() {
             </h1>
 
             {/* BACK BUTTON */}
-            <div className="flex justify-end mb-6">
-              <div className="bg-black text-white text-xl w-[80px] h-[40px] rounded-4xl flex items-center justify-center">
-                <i className="fas fa-angle-left text-[15px]"></i>
-                <a href="/Dynamic_Blog" className="text-[15px] ml-1">
-                  Back
-                </a>
-              </div>
-            </div>
+            <Link
+              href="/Dynamic_Blog"
+              className="bg-black text-white text-sm px-4 py-2 rounded-full flex items-center gap-2"
+            >
+              <i className="fas fa-angle-left"></i>
+              Back
+            </Link>
           </div>
 
           {/* META */}
@@ -116,26 +102,59 @@ export default function BlogDetailPage() {
             className="w-full h-[400px] object-contain rounded-lg mb-6"
           />
 
-          {/* CONTENT (RTL only for AR) */}
-          <p
-            className={`text-gray-700 leading-relaxed whitespace-pre-line ${
-              lang === "ar" ? "text-right" : ""
-            }`}
-            dir={lang === "ar" ? "rtl" : "ltr"}
-            dangerouslySetInnerHTML={{
-              __html: blog.blog_content?.[lang] || blog.blog_content?.en,
-            }}
-          />
+          {/* CONTENT BLOCK */}
+          {(() => {
+            const content = blog.blog_content?.[lang] || blog.blog_content?.en;
 
-          {/* BACK BUTTON */}
-          <div className="mt-8 flex gap-4">
-            <a
-              href="/Dynamic_Blog"
-              className="px-4 py-2 border rounded hover:bg-gray-100"
-            >
-              Back
-            </a>
-          </div>
+            const preview = content.split("</p>").slice(0, 1).join("</p>");
+
+            return (
+              <>
+                {/* PREVIEW */}
+                <div
+                  className={`text-gray-700 leading-relaxed ${
+                    lang === "ar" ? "text-right" : ""
+                  }`}
+                  dir={lang === "ar" ? "rtl" : "ltr"}
+                  dangerouslySetInnerHTML={{ __html: preview }}
+                />
+
+                {/* LOCK SECTION (NOT LOGGED IN) */}
+                {!user && (
+                  <div className="mt-12 text-center border-t pt-8">
+                    <h2 className="text-xl font-semibold mb-5">
+                      Create an account to read the full blog
+                    </h2>
+
+                    <Link
+                      href="/signup"
+                      className="bg-blue-900 text-white px-6 py-3 rounded-full hover:bg-blue-700"
+                    >
+                      Sign up with email
+                    </Link>
+
+                    <p className="text-sm text-gray-500 mt-4">
+                      Already have an account?{" "}
+                      <Link href="/login" className="text-blue-900 underline">
+                        Sign in
+                      </Link>
+                    </p>
+                  </div>
+                )}
+
+                {/* FULL CONTENT (LOGGED IN) */}
+                {user && (
+                  <div
+                    className={`mt-6 text-gray-700 leading-relaxed ${
+                      lang === "ar" ? "text-right" : ""
+                    }`}
+                    dir={lang === "ar" ? "rtl" : "ltr"}
+                    dangerouslySetInnerHTML={{ __html: content }}
+                  />
+                )}
+              </>
+            );
+          })()}
         </>
       ) : (
         <p className="text-red-500">Blog not found</p>

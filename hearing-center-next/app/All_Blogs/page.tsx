@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { BLOG_API_URL } from "@/lib/config";
-import { currentLang } from "@/lib/stores/lang";
-import { translations } from "@/lib/i18n";
 
+import { translations } from "@/lib/i18n";
+import { useLanguage } from "@/lib/context/LanguageContext";
+import Link from "next/link";
 type Blog = {
   _id: string;
   blog_title: Record<string, string>;
@@ -15,17 +16,11 @@ type Blog = {
 };
 
 export default function AllBlogsPage() {
+  const { lang, setLang } = useLanguage();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [lang, setLang] = useState("en");
 
   // 🌍 Language store
-  useEffect(() => {
-    const unsubscribe = currentLang.subscribe((value: string) => {
-      setLang(value);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // 🌍 Translation
   const t = translations[lang] || translations.en;
@@ -73,41 +68,41 @@ export default function AllBlogsPage() {
     <div className="pt-8 px-[80px]" dir={lang === "ar" ? "rtl" : "ltr"}>
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
-        <div className="flex gap-3 mb-4">
+        {/* <div className="flex gap-3 mb-4">
           <button
-            onClick={() => currentLang.set("en")}
+            onClick={() => setLang("en")}
             className="px-3 py-1 border rounded"
           >
             EN
           </button>
           <button
-            onClick={() => currentLang.set("ta")}
+            onClick={() => setLang("ta")}
             className="px-3 py-1 border rounded"
           >
             TA
           </button>
           <button
-            onClick={() => currentLang.set("ar")}
+            onClick={() => setLang("ar")}
             className="px-3 py-1 border rounded"
           >
             AR
           </button>
           <button
-            onClick={() => currentLang.set("ml")}
+            onClick={() => setLang("ml")}
             className="px-3 py-1 border rounded"
           >
             ML
           </button>
-        </div>
+        </div> */}
 
         <h1 className="text-2xl font-bold">{t.allBlogs}</h1>
 
-        <a
+        <Link
           href="/Dynamic_Blog/new"
           className="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           {t.newBlog}
-        </a>
+        </Link>
       </div>
 
       {/* CONTENT */}

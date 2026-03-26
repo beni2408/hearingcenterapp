@@ -18,42 +18,54 @@ export default function CreateBlogPage() {
 
   // 📝 CKEditor setup
   useEffect(() => {
+    let isMounted = true;
+
     const initEditor = async () => {
       const ClassicEditor = (await import("@ckeditor/ckeditor5-build-classic"))
         .default;
 
-      if (editorRef.current) {
-        ClassicEditor.create(editorRef.current, {
-          placeholder: "Write your blog content here...",
-          toolbar: [
-            "bold",
-            "italic",
-            "underline",
-            "strikethrough",
-            "numberedList",
-            "bulletedList",
-            "link",
-            "blockQuote",
-            "insertTable",
-            "imageUpload",
-            "undo",
-            "redo",
-          ],
-        }).then((editor: any) => {
-          editorInstance.current = editor;
+      if (!editorRef.current) return;
 
-          editor.model.document.on("change:data", () => {
-            setBlogContent(editor.getData());
-          });
-        });
-      }
+      // ✅ FIX: remove duplicate editor DOM
+      editorRef.current.innerHTML = "";
+
+      if (editorInstance.current) return;
+
+      const editor = await ClassicEditor.create(editorRef.current, {
+        placeholder: "Write your blog content here...",
+        toolbar: [
+          "bold",
+          "italic",
+          "underline",
+          "strikethrough",
+          "numberedList",
+          "bulletedList",
+          "link",
+          "blockQuote",
+          "insertTable",
+          "imageUpload",
+          "undo",
+          "redo",
+        ],
+      });
+
+      if (!isMounted) return;
+
+      editorInstance.current = editor;
+
+      editor.model.document.on("change:data", () => {
+        setBlogContent(editor.getData());
+      });
     };
 
     initEditor();
 
     return () => {
+      isMounted = false;
+
       if (editorInstance.current) {
         editorInstance.current.destroy();
+        editorInstance.current = null;
       }
     };
   }, []);

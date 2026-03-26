@@ -12,6 +12,7 @@ import pageRouter from "./routes/pageRoutes.js";
 import menuRouter from "./routes/menuRoutes.js";
 import footerRouter from "./routes/footerRoutes.js";
 import appointmentRoutes from "./routes/appointmentsRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -35,3 +36,4 @@ app.get("/api/footer-test", (req, res) => {
   res.json({ ok: true });
 });
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/auth", authRoutes);

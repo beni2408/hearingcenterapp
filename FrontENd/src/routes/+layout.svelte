@@ -4,7 +4,7 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import '@fortawesome/fontawesome-free/css/all.css';
 	import '../app.css';   
-
+	
   import "../app.css"
 	
 	let { children } = $props();
