@@ -6,7 +6,6 @@ import { API_BASE_URL } from "@/lib/config";
 export default function AppointmentsCalendarPage() {
   const calendarRef = useRef<HTMLDivElement | null>(null);
 
-  // ⏱ Update event time
   const updateEventTime = async (info: any) => {
     const start = info.event.start;
     const end = info.event.end;
@@ -25,20 +24,18 @@ export default function AppointmentsCalendarPage() {
 
     if (!res.ok) {
       alert("Time conflict or update failed");
-      info.revert(); // ⛔ rollback UI
+      info.revert();
     }
   };
 
   useEffect(() => {
     const loadCalendar = async () => {
-      // ✅ Load CSS
       const link = document.createElement("link");
       link.rel = "stylesheet";
       link.href =
         "https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css";
       document.head.appendChild(link);
 
-      // ✅ Load Script
       const script = document.createElement("script");
       script.src =
         "https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js";
@@ -66,7 +63,6 @@ export default function AppointmentsCalendarPage() {
           calendarRef.current,
           {
             initialView: "timeGridDay",
-
             headerToolbar: {
               left: "prev,next today",
               center: "title",
@@ -75,7 +71,6 @@ export default function AppointmentsCalendarPage() {
 
             navLinks: true,
             nowIndicator: true,
-
             editable: true,
             eventStartEditable: true,
             eventDurationEditable: true,
@@ -101,7 +96,6 @@ export default function AppointmentsCalendarPage() {
             slotDuration: "00:30:00",
 
             allDaySlot: false,
-
             eventOverlap: true,
             slotEventOverlap: false,
 
@@ -139,29 +133,45 @@ export default function AppointmentsCalendarPage() {
     loadCalendar();
   }, []);
 
-  // ➕ Navigate
   const goToNewAppointment = () => {
     window.location.href = "/Appointments/new";
   };
 
   return (
-    <>
-      {/* HEADER */}
-      <div className="flex justify-between items-center mx-[80px] mb-6 mt-10">
-        <h1 className="text-2xl font-bold mb-10">Appointments</h1>
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-14 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-7xl mx-auto">
+        {/* HEADER */}
+        <div className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
+                Appointments
+              </span>
+            </h1>
 
-        <button
-          onClick={goToNewAppointment}
-          className="bg-blue-900 text-white px-4 py-2 rounded"
-        >
-          + Add New Appointment
-        </button>
-      </div>
+            <p className="text-sm sm:text-base text-gray-500 mt-2">
+              Manage and schedule your team appointments
+            </p>
 
-      {/* CALENDAR */}
-      <div className="mx-[80px] mb-10 bg-white rounded-xl shadow-md p-6">
-        <div ref={calendarRef}></div>
+            <div className="mt-4 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+          </div>
+
+          <button
+            onClick={goToNewAppointment}
+            className="bg-black text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition hover:scale-[1.02]"
+          >
+            + Add Appointment
+          </button>
+        </div>
+
+        {/* CALENDAR CARD */}
+        <div className="relative bg-white/80 backdrop-blur border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition p-4 sm:p-6">
+          {/* subtle glow layer */}
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-transparent via-white/40 to-transparent pointer-events-none" />
+
+          <div className="relative min-h-[500px]" ref={calendarRef}></div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
