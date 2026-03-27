@@ -57,9 +57,9 @@ export default function ProfilePage() {
 
         {/* ACTIONS */}
         <div className="flex flex-col gap-3">
-          <button className="w-full bg-[#266985] text-white py-2 rounded-lg hover:opacity-90 transition">
+          {/* <button className="w-full bg-[#266985] text-white py-2 rounded-lg hover:opacity-90 transition">
             Edit Profile (Coming Soon)
-          </button>
+          </button> */}
 
           <button
             onClick={() => {
